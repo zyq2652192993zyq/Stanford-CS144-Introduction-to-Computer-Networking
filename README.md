@@ -6,9 +6,7 @@ The emphasis will be on the basic performance and engineering tradeoffs in the d
 
 ## Course Information
 
-Link: http://www.scs.stanford.edu/10au-cs144/
-
-Lectures: http://www.scs.stanford.edu/10au-cs144/notes/
+Link: https://kangyupl.gitee.io/cs144.github.io/ （mirror）
 
 Notes:
 
@@ -20,8 +18,10 @@ Notes:
 
 ## Lab
 
-* Labs 1 & 2: Reliable Transport
-
-* Lab 3: Simple Router
-* Lab 4: Dynamic Routing
-* Lab 5: Network Address Translator
+* Lab 0: networking warmup
+* Lab 1: stitching substrings into a byte stream
+* Lab 2: the TCP receiver
+* Lab 3: the TCP sender
+* Lab 4: the TCP connection
+* Lab 5: the network interface
+* Lab 6: the IP router
