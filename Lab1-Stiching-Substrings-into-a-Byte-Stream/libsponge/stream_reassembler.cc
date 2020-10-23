@@ -23,40 +23,23 @@ void StreamReassembler::push_substring(const string &data, const size_t index, c
         end_index = index + data.size();
         eof_set = true;
     }
-    if (cur_max_index > index + data.size())
-        return;
+    // the data has been assembled
+    if (cur_max_index > index + data.size()) return;
+
     size_t offset = max(index, cur_max_index) - index;
-    // TODO: the mod operation can be optimized out, with begin/end index
     for (size_t i = offset; i < data.size(); ++i) {
         // make sure not to overwrite the previous data
         if (exist_data[(i + index) % _capacity] && unassembled_data[(i + index) % _capacity] != data[i])
             break;
+
         unassembled_data[(i + index) % _capacity] = data[i];
         if (!exist_data[(i + index) % _capacity]) {
             exist_data[(i + index) % _capacity] = true;
-            unassembled_size++;
+            ++unassembled_size;
         }
     }
-    assemble_data();
-    // if (index == offset) {
-    // 	offset += data.size() + 1;
-    // 	tranferData = leftString + data;
-    // 	size_t len = tranferData.size();
-    // 	size_t pos = 0;
-    // 	while (len > capacity) {
-    // 		_output.write(tranferData.substr(pos, capacity));
-    // 		pos += capacity;
-    // 		len -= capacity;
-    // 	}
-    // 	if (len) leftString = tranferData.substr(pos);
-    		
-    // 	tranferData = "";
 
-    // 	if (eof) {
-    // 		if (!leftString.empty()) _output.write(leftString);
-    // 		_output.end_input();
-    // 	}
-    // }
+    assemble_data();
 }
 
 size_t StreamReassembler::unassembled_bytes() const { return unassembled_size; }
@@ -71,6 +54,7 @@ void StreamReassembler::assemble_data() {
         exist_data[temp_cur_index % _capacity] = false;
         data_to_assemble += unassembled_data[temp_cur_index++ % _capacity];
     }
+    
     // now get the exact number written
     size_t nwritten = _output.write(data_to_assemble);
     for (size_t i = nwritten; i < data_to_assemble.size(); ++i) {
@@ -79,6 +63,7 @@ void StreamReassembler::assemble_data() {
     }
     unassembled_size -= nwritten;
     cur_max_index += nwritten;
+
     if (eof_set && cur_max_index == end_index) {
         _output.end_input();
     }
