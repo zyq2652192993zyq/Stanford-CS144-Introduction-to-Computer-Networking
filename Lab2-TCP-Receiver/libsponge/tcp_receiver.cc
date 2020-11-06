@@ -57,6 +57,7 @@ bool TCPReceiver::segment_received(const TCPSegment &seg) {
 
     checkpoint = _reassembler.stream_out().bytes_written();
     ack        = wrap(_reassembler.stream_out().bytes_written() + 1, WrappingInt32{isn}).raw_value();
+
     if (isFINSet && _reassembler.unassembled_bytes() == 0) ++ack;
     
     return isInside;
